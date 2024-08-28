@@ -130,7 +130,7 @@ class MIAUser extends \Illuminate\Database\Eloquent\Model
     {
         parent::boot();
         
-        static::addGlobalScope('exclude', function (\Illuminate\Database\Eloquent\Builder $builder) {
+        static::addGlobalScope('exclude', function (\Illuminate\Database\Eloquent\Builder $builder): void {
             $builder->where('mia_user.deleted', 0);
         });
     }
