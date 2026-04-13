@@ -96,9 +96,7 @@ class MIAUser extends \Illuminate\Database\Eloquent\Model
      */
     public static function encryptPassword($password)
     {
-        $bcrypt = new \Laminas\Crypt\Password\Bcrypt();
-        $bcrypt->setCost(10);
-        return $bcrypt->create($password);
+        return password_hash($password, PASSWORD_BCRYPT, ['cost' => 10]);
     }
     /**
      * Valida si el password es correcto
@@ -108,9 +106,7 @@ class MIAUser extends \Illuminate\Database\Eloquent\Model
      */
     public static function verifyPassword($password, $hash)
     {
-        $bcrypt = new \Laminas\Crypt\Password\Bcrypt();
-        $bcrypt->setCost(10);
-        return $bcrypt->verify($password, $hash);
+        return password_verify($password, $hash);
     }
 
     /**
