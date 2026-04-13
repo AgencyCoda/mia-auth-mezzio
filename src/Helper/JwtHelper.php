@@ -74,14 +74,23 @@ trait JwtHelper
                 'id' => $userId,
                 'email' => $email
             )
-        ), $this->key, 'HS256');
+        ), $this->getHmacKey(), 'HS256');
     }
     /**
-     * 
+     *
      */
     public function decodeToken($token)
     {
-        return JWT::decode($token, new Key($this->key, 'HS256'));
+        return JWT::decode($token, new Key($this->getHmacKey(), 'HS256'));
+    }
+
+    /**
+     * Pads the key to meet the minimum length required by firebase/php-jwt v7 (32 bytes for HS256).
+     * HMAC internally pads shorter keys with null bytes, so existing tokens remain valid.
+     */
+    private function getHmacKey(): string
+    {
+        return str_pad($this->key, 32, "\0");
     }
 
     /**
